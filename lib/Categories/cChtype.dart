@@ -134,7 +134,7 @@ class _TypeState extends State<Type> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
+        title: const Center(
           child: Text("اختيار نوع المهنة"),
         ),
       ),
@@ -182,11 +182,11 @@ class _TypeState extends State<Type> {
                   future: _fetchAdNames(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
-                      return Center(child: Text("خطأ في جلب البيانات"));
+                      return const Center(child: Text("خطأ في جلب البيانات"));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(child: Text("لايوجد اعلانات"));
+                      return const Center(child: Text("لايوجد اعلانات"));
                     } else {
                       print("Data fetched: ${snapshot.data}");
                       return SizedBox(
@@ -206,14 +206,14 @@ class _TypeState extends State<Type> {
                 ),
                 SizedBox(height: 10.h),
                 if (_isLoadingTypes)
-                  Center(child: CircularProgressIndicator())
+                  const Center(child: CircularProgressIndicator())
                 else if (_typeDocs.isEmpty)
-                  Center(child: Text("No Type available"))
+                  const Center(child: Text("No Type available"))
                 else
                   GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 15.0,
                       mainAxisSpacing: 10.0,

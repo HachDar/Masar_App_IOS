@@ -20,7 +20,7 @@ class CityPage extends StatefulWidget {
 
 class _CityPageState extends State<CityPage> {
   void _launchAdurl(String adurl) async {
-    String url = "$adurl";
+    String url = adurl;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -140,7 +140,7 @@ class _CityPageState extends State<CityPage> {
                   btnCancelOnPress: () {},
                 ).show();
               },
-              icon: Icon(Icons.logout))
+              icon: const Icon(Icons.logout))
         ],
       ),
       backgroundColor: Colors.white,
@@ -183,11 +183,11 @@ class _CityPageState extends State<CityPage> {
             future: _fetchAdNames(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text("خطأ في جلب البيانات"));
+                return const Center(child: Text("خطأ في جلب البيانات"));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text("لايوجد اعلانات"));
+                return const Center(child: Text("لايوجد اعلانات"));
               } else {
                 print("Data fetched: ${snapshot.data}");
                 return SizedBox(
@@ -210,16 +210,16 @@ class _CityPageState extends State<CityPage> {
             future: _fetchCityNames(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text("Error fetching cities"));
+                return const Center(child: Text("Error fetching cities"));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text("No cities available"));
+                return const Center(child: Text("No cities available"));
               } else {
                 return GridView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 15.0,
                     mainAxisSpacing: 10.0,

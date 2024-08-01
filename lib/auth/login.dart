@@ -294,7 +294,7 @@ class _LoginState extends State<Login> {
                         width: 50.w,
                         height: 50.h,
                         child: Image.asset(
-                            "https://freepnglogo.com/images/all_img/1713419057Facebook_PNG.png"),
+                            "images/Facebook_Logo_2023.png"),
                       ),
                     ),
                     InkWell(

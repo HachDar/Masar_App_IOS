@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _requestPermissions();
-    _subscribeToTopic(); 
+    _subscribeToTopic();
   }
 
   Future<void> _subscribeToTopic() async {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Masar</string>
+    <string name="facebook_app_id">1869948500154694</string>
+    <string name="fb_login_protocol_scheme">fb3a393860c2d8567de59b245ea5673235</string>
+</resources>

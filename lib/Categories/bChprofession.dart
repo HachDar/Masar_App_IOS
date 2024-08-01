@@ -131,7 +131,7 @@ class _ProfessionState extends State<Profession> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Center(
+        title: const Center(
           child: Text("اختيار المهنة"),
         ),
       ),
@@ -178,11 +178,11 @@ class _ProfessionState extends State<Profession> {
                   future: _fetchAdNames(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
-                      return Center(child: Text("خطأ في جلب البيانات"));
+                      return const Center(child: Text("خطأ في جلب البيانات"));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(child: Text("لايوجد اعلانات"));
+                      return const Center(child: Text("لايوجد اعلانات"));
                     } else {
                       print("Data fetched: ${snapshot.data}");
                       return SizedBox(
@@ -202,14 +202,14 @@ class _ProfessionState extends State<Profession> {
                 ),
                 SizedBox(height: 10.h),
                 if (_isLoadingProfessions)
-                  Center(child: CircularProgressIndicator())
+                  const Center(child: CircularProgressIndicator())
                 else if (_professionDocs.isEmpty)
-                  Center(child: Text("No professions available"))
+                  const Center(child: Text("No professions available"))
                 else
                   GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 15.0,
                       mainAxisSpacing: 10.0,

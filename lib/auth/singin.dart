@@ -30,7 +30,7 @@ class _RegisterState extends State<Register> {
         final OAuthCredential facebookAuthCredential =
             FacebookAuthProvider.credential(
                 loginResult.accessToken!.tokenString);
-        Get.offAll(CityPage());
+        Get.offAll(const CityPage());
         // Once signed in, return the UserCredential
         return await FirebaseAuth.instance
             .signInWithCredential(facebookAuthCredential);
@@ -143,7 +143,7 @@ class _RegisterState extends State<Register> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => Center(
+      builder: (context) => const Center(
         child: CircularProgressIndicator(),
       ),
     );
@@ -169,7 +169,7 @@ class _RegisterState extends State<Register> {
         btnOkText: "تسجيل الدخول",
         btnCancelText: "الغاء",
         btnOkOnPress: () {
-          Get.off(Login());
+          Get.off(const Login());
         },
         btnCancelOnPress: () {},
       ).show();
@@ -217,7 +217,7 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blue),
+          icon: const Icon(Icons.arrow_back, color: Colors.blue),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -246,7 +246,7 @@ class _RegisterState extends State<Register> {
                 SizedBox(height: 40.h),
                 TextField(
                   controller: email,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'البريد الالكتروني',
                     border: OutlineInputBorder(),
                   ),
@@ -257,7 +257,7 @@ class _RegisterState extends State<Register> {
                   obscureText: _obscureText,
                   decoration: InputDecoration(
                     labelText: 'كلمة المرور',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       onPressed: _toggleVisibility,
                       icon: Icon(
@@ -271,20 +271,20 @@ class _RegisterState extends State<Register> {
                   width: 300.w,
                   child: ElevatedButton(
                     onPressed: _register,
-                    child: Text('انشاء الحساب'),
+                    child: const Text('انشاء الحساب'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.blue,
                       padding: EdgeInsets.symmetric(
                           vertical: 16.h, horizontal: 24.w),
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20.h),
-                Text('تسجيل باستخدام'),
+                const Text('تسجيل باستخدام'),
                 SizedBox(height: 10.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -296,14 +296,13 @@ class _RegisterState extends State<Register> {
                       child: SizedBox(
                         width: 50.w,
                         height: 50.h,
-                        child: Image.asset(
-                            "https://freepnglogo.com/images/all_img/1713419057Facebook_PNG.png"),
+                        child: Image.asset("images\Facebook_Logo_2023.png"),
                       ),
                     ),
                     InkWell(
                       onTap: () async {
                         await signInWithGoogle();
-                        Get.offAll(CityPage());
+                        Get.offAll(const CityPage());
                       },
                       child: SizedBox(
                         width: 50.w,
