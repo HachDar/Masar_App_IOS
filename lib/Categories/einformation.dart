@@ -66,50 +66,36 @@ class _InformationState extends State<Information> {
     }
   }
 
-  void _launchCall(String phone) async {
-    String url = "tel:$phone";
-    if (await canLaunch(url)) {
-      await launch(url);
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
-      throw 'Could not launch $url';
+      print('Could not launch URL: $uri');
+      throw 'Could not launch URL: $uri';
     }
   }
 
-  void _launchWhatsApp(String whats) async {
-    String url = "https://wa.me/$whats";
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+  Future<void> _launchCall(String phone) async {
+    await _launchUrl('tel:$phone');
   }
 
-  void _launchInsta(String insta) async {
-    String url = "$insta";
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+  Future<void> _launchWhatsApp(String whats) async {
+    await _launchUrl('https://wa.me/$whats');
   }
 
-  void _launchLocation(String location) async {
-    String url = Uri.encodeFull(
-        "https://www.google.com/maps/search/?api=1&query=$location");
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+  Future<void> _launchInsta(String insta) async {
+    await _launchUrl(insta);
   }
 
-  void _launchFacebook(String facebook) async {
-    String url = "$facebook";
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+  Future<void> _launchLocation(String location) async {
+    const String baseUrl = 'https://www.google.com/maps/search/';
+    final String query = Uri.encodeComponent(location);
+    await _launchUrl('$baseUrl$query');
+  }
+
+  Future<void> _launchFacebook(String facebook) async {
+    await _launchUrl(facebook);
   }
 
   @override
@@ -117,10 +103,15 @@ class _InformationState extends State<Information> {
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text(
+          'الملف الشخصي',
+          style: TextStyle(
+            fontFamily: "Boutros",
+          ),
+        ),
       ),
       body: _isLoadingInfo
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView(
               children: [
                 Padding(
@@ -136,6 +127,7 @@ class _InformationState extends State<Information> {
                       Text(
                         _infoData?['name'] ?? 'غير متوفر...',
                         style: TextStyle(
+                          fontFamily: "Boutros",
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.lightBlue,
@@ -145,6 +137,7 @@ class _InformationState extends State<Information> {
                       Text(
                         _infoData?['joptitle'] ?? 'غير متوفر...',
                         style: TextStyle(
+                          fontFamily: "Boutros",
                           fontSize: 18.sp,
                           color: Colors.grey[700],
                         ),
@@ -158,10 +151,15 @@ class _InformationState extends State<Information> {
                           margin: EdgeInsets.symmetric(vertical: 8.h),
                           elevation: 0,
                           child: ListTile(
-                            leading:
-                                Icon(Icons.call, color: Colors.greenAccent),
+                            leading: const Icon(Icons.call,
+                                color: Colors.greenAccent),
                             title: GestureDetector(
-                              child: Text("اضغط للاتصال"),
+                              child: const Text(
+                                "اضغط للاتصال",
+                                style: TextStyle(
+                                  fontFamily: "Boutros",
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -182,7 +180,12 @@ class _InformationState extends State<Information> {
                                   "https://img.icons8.com/?size=100&id=16713&format=png&color=000000"),
                             ),
                             title: GestureDetector(
-                              child: Text("اضغط للانتقال للواتس اب"),
+                              child: const Text(
+                                "اضغط للانتقال للواتس اب",
+                                style: TextStyle(
+                                  fontFamily: "Boutros",
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -196,7 +199,7 @@ class _InformationState extends State<Information> {
                           elevation: 0,
                           margin: EdgeInsets.symmetric(vertical: 8.h),
                           child: ListTile(
-                            leading: Icon(Icons.location_on,
+                            leading: const Icon(Icons.location_on,
                                 color: Colors.redAccent),
                             title: GestureDetector(
                               child: Text(
@@ -209,7 +212,8 @@ class _InformationState extends State<Information> {
                         elevation: 0,
                         margin: EdgeInsets.symmetric(vertical: 8.h),
                         child: ListTile(
-                          leading: Icon(Icons.school, color: Colors.blueAccent),
+                          leading: const Icon(Icons.school,
+                              color: Colors.blueAccent),
                           title: Text(
                               _infoData?['certificates'] ?? 'غير متوفر...'),
                         ),
@@ -223,13 +227,13 @@ class _InformationState extends State<Information> {
                           margin: EdgeInsets.symmetric(vertical: 8.h),
                           child: ListTile(
                             leading: SizedBox(
-                              child: Image.network(
-                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png"),
                               height: 15.h,
                               width: 15.w,
+                              child: Image.network(
+                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png"),
                             ),
                             title: GestureDetector(
-                              child: Text('حساب الانستغرام'),
+                              child: const Text('حساب الانستغرام'),
                             ),
                           ),
                         ),
@@ -244,13 +248,13 @@ class _InformationState extends State<Information> {
                           margin: EdgeInsets.symmetric(vertical: 8.h),
                           child: ListTile(
                             leading: SizedBox(
-                              child: Image.network(
-                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1200px-Facebook_f_logo_%282019%29.png"),
                               height: 15.h,
                               width: 15.w,
+                              child: Image.network(
+                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1200px-Facebook_f_logo_%282019%29.png"),
                             ),
                             title: GestureDetector(
-                              child: Text('حساب الفيسبوك '),
+                              child: const Text('حساب الفيسبوك '),
                             ),
                           ),
                         ),

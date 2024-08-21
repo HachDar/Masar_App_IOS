@@ -9,13 +9,13 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.backgroundColor,
     required this.width,
     required this.height,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,7 @@ class CustomButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
+              fontFamily: "Boutros",
               color: Colors.white,
               fontSize: 16.sp,
             ),

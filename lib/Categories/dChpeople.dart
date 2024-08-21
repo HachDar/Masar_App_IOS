@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dalel/Categories/einformation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,10 +23,10 @@ class People extends StatefulWidget {
 
 class _PeopleState extends State<People> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<String> _adNames = [];
+  final List<String> _adNames = [];
   List<DocumentSnapshot> _peopleDocs = [];
-  int _currentIndex = 0;
-  bool _isLoadingAds = true;
+  final int _currentIndex = 0;
+  final bool _isLoadingAds = true;
   bool _isLoadingPeople = true;
 
   @override
@@ -45,8 +46,8 @@ class _PeopleState extends State<People> {
           .collection("type")
           .doc(widget.typeid)
           .collection("people")
+          .orderBy('timestamp', descending: false) // ترتيب تصاعدي
           .get();
-
       List<DocumentSnapshot> peopleDocs = [];
       for (var doc in querySnapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
@@ -70,7 +71,7 @@ class _PeopleState extends State<People> {
   }
 
   void _launchAdurl(String adurl) async {
-    String url = "$adurl";
+    String url = adurl;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -149,13 +150,53 @@ class _PeopleState extends State<People> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Center(
-          child: Text("اختيار الاشخاص"),
+          child: Text(
+            "اختيار الاشخاص",
+            style: TextStyle(
+              fontFamily: "Boutros",
+            ),
+          ),
         ),
       ),
       body: ListView(
         children: [
+          Container(
+            height: 100.h,
+            width: 200.w,
+            color: Colors.white,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: CircleAvatar(
+                    radius: 55,
+                    backgroundColor: Colors.grey,
+                    child: SvgPicture.asset(
+                        "assets/Black and Orange Initials Letter R Broadcast Media Logo.svg"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 16.0,
+                    right: 8.0,
+                  ),
+                  child: Text(
+                    "مسار",
+                    style: TextStyle(
+                        fontFamily: "Boutros",
+                        color: Colors.blue,
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Container(
             color: Colors.white,
             child: Column(
@@ -195,7 +236,8 @@ class _PeopleState extends State<People> {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 15.0,
                       mainAxisSpacing: 10.0,
@@ -204,38 +246,47 @@ class _PeopleState extends State<People> {
                     itemBuilder: (context, i) {
                       final data =
                           _peopleDocs[i].data() as Map<String, dynamic>;
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Get.to(Information(
-                              typeid: widget.typeid,
-                              profid: widget.profid,
-                              catid: widget.catid,
-                              peoid: _peopleDocs[i].id,
-                              namepeo: data['name'],
-                            ));
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
+                      return InkWell(
+                        onTap: () {
+                          Get.to(Information(
+                            typeid: widget.typeid,
+                            profid: widget.profid,
+                            catid: widget.catid,
+                            peoid: _peopleDocs[i].id,
+                            namepeo: data['name'],
+                          ));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                8.0.r), // ضبط نصف القطر بناءً على حجم الشاشة
+                          ),
+                          child: Padding(
+                            // إضافة Padding لتحسين التباعد الداخلي
+                            padding: EdgeInsets.all(
+                                2.0.w), // ضبط التباعد بناءً على حجم الشاشة
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 CircleAvatar(
-                                  radius: 30.r,
+                                  radius: 18
+                                      .r, // ضبط نصف قطر الأيقونة بناءً على حجم الشاشة
                                   backgroundImage: NetworkImage(
                                     data['imageUrl'],
                                   ),
                                 ),
+                                SizedBox(
+                                    height:
+                                        2.h), // إضافة تباعد بين الأيقونة والنص
                                 Text(
-                                  data[
-                                      'name'], // يمكنك تغيير هذا النص بعنوان البطاقة
+                                  data['name'],
                                   style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blueAccent),
+                                    fontFamily: "Boutros",
+                                    fontSize: 13
+                                        .sp, // ضبط حجم الخط بناءً على حجم الشاشة
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blueAccent,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ],

@@ -1,14 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dalel/Categories/aChcity.dart';
 import 'package:dalel/auth/authpage.dart';
-import 'package:dalel/extensions/button.dart';
-import 'package:dalel/extensions/textformfild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -43,37 +40,6 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  Future<UserCredential> signInWithFacebook() async {
-    try {
-      // Trigger the sign-in flow
-      final LoginResult loginResult = await FacebookAuth.instance.login();
-
-      // Check for error in login result
-      if (loginResult.status == LoginStatus.success) {
-        // Create a credential from the access token
-        final OAuthCredential facebookAuthCredential =
-            FacebookAuthProvider.credential(
-                loginResult.accessToken!.tokenString);
-        Get.offAll(CityPage());
-        // Once signed in, return the UserCredential
-        return await FirebaseAuth.instance
-            .signInWithCredential(facebookAuthCredential);
-      } else {
-        print('Facebook login failed: ${loginResult.status}');
-        throw FirebaseAuthException(
-          code: 'ERROR_FACEBOOK_LOGIN_FAILED',
-          message: loginResult.message,
-        );
-      }
-    } catch (e) {
-      print('Error during Facebook login: $e');
-      throw FirebaseAuthException(
-        code: 'ERROR_FACEBOOK_LOGIN_FAILED',
-        message: e.toString(),
-      );
-    }
-  }
-
   Future<UserCredential> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -90,20 +56,8 @@ class _LoginState extends State<Login> {
         return Future.error("Google sign-in failed");
       }
 
-      final GoogleSignInAuthentication? googleAuth =
+      final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      if (googleAuth == null) {
-        print("Google authentication failed");
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.error,
-          animType: AnimType.bottomSlide,
-          title: 'خطأ',
-          desc: 'فشل التحقق من Google. الرجاء المحاولة مرة أخرى.',
-          btnOkOnPress: () {},
-        ).show();
-        return Future.error("Google authentication failed");
-      }
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -119,7 +73,7 @@ class _LoginState extends State<Login> {
         animType: AnimType.bottomSlide,
         title: 'خطأ',
         desc:
-            'حدث خطأ غير متوقع أثناء تسجيل الدخول عبر Google. الرجاء المحاولة مرة أخرى.',
+            'Google حدث خطأ غير متوقع أثناء تسجيل الدخول الرجاء المحاولة مرة أخرى',
         btnOkOnPress: () {},
       ).show();
       return Future.error(e);
@@ -142,7 +96,7 @@ class _LoginState extends State<Login> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => Center(
+      builder: (context) => const Center(
         child: CircularProgressIndicator(),
       ),
     );
@@ -170,7 +124,7 @@ class _LoginState extends State<Login> {
       }
 
       Navigator.of(context).pop();
-      Get.offAll(CityPage());
+      Get.offAll(const CityPage());
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
       String message;
@@ -210,12 +164,13 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blue),
-          onPressed: () => Get.offAll(AuthPage()),
+          icon: const Icon(Icons.arrow_back, color: Colors.blue),
+          onPressed: () => Get.offAll(const AuthPage()),
         ),
       ),
       body: ListView(
@@ -225,25 +180,22 @@ class _LoginState extends State<Login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'مسار',
-                  style: TextStyle(
-                    fontSize: 48.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
+                CircleAvatar(
+                  child: Image.asset(
+                      "images/Black and Orange Initials Letter R Broadcast Media Logo.png"),
                 ),
                 SizedBox(height: 20.h),
                 Text(
                   'تسجيل الدخول',
                   style: TextStyle(
+                    fontFamily: "Boutros",
                     fontSize: 24.sp,
                   ),
                 ),
                 SizedBox(height: 40.h),
                 TextField(
                   controller: email,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'البريد الالكتروني',
                     border: OutlineInputBorder(),
                   ),
@@ -254,7 +206,7 @@ class _LoginState extends State<Login> {
                   obscureText: _obscureText,
                   decoration: InputDecoration(
                     labelText: 'كلمة المرور',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       onPressed: _toggleVisibility,
                       icon: Icon(
@@ -268,47 +220,41 @@ class _LoginState extends State<Login> {
                   width: 300.w,
                   child: ElevatedButton(
                     onPressed: _signIn,
-                    child: Text('تسجيل الدخول'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.blue,
                       padding: EdgeInsets.symmetric(
                           vertical: 16.h, horizontal: 24.w),
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                    child: const Text(
+                      'تسجيل الدخول',
+                      style: TextStyle(
+                        fontFamily: "Boutros",
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20.h),
-                Text('تسجيل باستخدام'),
+                const Text(
+                  'تسجيل باستخدام',
+                  style: TextStyle(
+                    fontFamily: "Boutros",
+                  ),
+                ),
                 SizedBox(height: 10.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        await signInWithFacebook();
-                      },
-                      child: SizedBox(
-                        width: 50.w,
-                        height: 50.h,
-                        child: Image.asset(
-                            "images/Facebook_Logo_2023.png"),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await signInWithGoogle();
-                        Get.offAll(CityPage());
-                      },
-                      child: SizedBox(
-                        width: 50.w,
-                        height: 50.h,
-                        child: Image.asset("images/google-symbol.png"),
-                      ),
-                    ),
-                  ],
+                InkWell(
+                  onTap: () async {
+                    await signInWithGoogle();
+                    Get.offAll(const CityPage());
+                  },
+                  child: SizedBox(
+                    width: 50.w,
+                    height: 50.h,
+                    child: Image.asset("images/google-symbol.png"),
+                  ),
                 ),
               ],
             ),

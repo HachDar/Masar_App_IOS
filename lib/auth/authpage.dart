@@ -6,6 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class AuthPage extends StatelessWidget {
+  const AuthPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +28,7 @@ class AuthPage extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 50),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(500),
                   child: SizedBox(
@@ -53,14 +55,14 @@ class AuthPage extends StatelessWidget {
                     button(
                       "تسجيل الدخول",
                       () {
-                        Get.to(Login());
+                        Get.to(const Login());
                       },
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     button(
                       "انشاء الحساب",
                       () {
-                        Get.to(Register());
+                        Get.to(const Register());
                       },
                     )
                   ],

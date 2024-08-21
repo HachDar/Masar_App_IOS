@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'cChtype.dart';
 import 'dChpeople.dart';
 
 class Type extends StatefulWidget {
@@ -19,10 +18,10 @@ class Type extends StatefulWidget {
 
 class _TypeState extends State<Type> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<String> _adNames = [];
+  final List<String> _adNames = [];
   List<DocumentSnapshot> _typeDocs = [];
-  int _currentIndex = 0;
-  bool _isLoadingAds = true;
+  final int _currentIndex = 0;
+  final bool _isLoadingAds = true;
   bool _isLoadingTypes = true;
 
   @override
@@ -40,6 +39,7 @@ class _TypeState extends State<Type> {
           .collection("profession")
           .doc(widget.profid)
           .collection("type")
+          .orderBy('timestamp', descending: false) // ترتيب تصاعدي
           .get();
       setState(() {
         _typeDocs = querySnapshot.docs;
@@ -54,7 +54,7 @@ class _TypeState extends State<Type> {
   }
 
   void _launchAdurl(String adurl) async {
-    String url = "$adurl";
+    String url = adurl;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -133,14 +133,20 @@ class _TypeState extends State<Type> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Center(
-          child: Text("اختيار نوع المهنة"),
+          child: Text(
+            "اختيار نوع المهنة",
+            style: TextStyle(
+              fontFamily: "Boutros",
+            ),
+          ),
         ),
       ),
       body: ListView(
         children: [
-            Container(
+          Container(
             height: 100.h,
             width: 200.w,
             color: Colors.white,
@@ -157,7 +163,6 @@ class _TypeState extends State<Type> {
                         "assets/Black and Orange Initials Letter R Broadcast Media Logo.svg"),
                   ),
                 ),
-                
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 16.0,
@@ -166,6 +171,7 @@ class _TypeState extends State<Type> {
                   child: Text(
                     "مسار",
                     style: TextStyle(
+                        fontFamily: "Boutros",
                         color: Colors.blue,
                         fontSize: 32.sp,
                         fontWeight: FontWeight.bold),
@@ -213,7 +219,8 @@ class _TypeState extends State<Type> {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 15.0,
                       mainAxisSpacing: 10.0,
@@ -221,40 +228,49 @@ class _TypeState extends State<Type> {
                     itemCount: _typeDocs.length,
                     itemBuilder: (context, i) {
                       final people = _typeDocs[i];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Get.to(People(
-                                profid: widget.profid,
-                                catid: widget.catid,
-                                typeid: people.id));
-                          },
-                          child:  Card(
+                      return InkWell(
+                        onTap: () {
+                          Get.to(People(
+                              profid: widget.profid,
+                              catid: widget.catid,
+                              typeid: people.id));
+                        },
+                        child: Card(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(
+                                8.0.r), // ضبط نصف القطر بناءً على حجم الشاشة
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 30.r,
-                                backgroundImage: NetworkImage(
-                                  people['imageUrl'],
+                          child: Padding(
+                            // إضافة Padding لتحسين التباعد الداخلي
+                            padding: EdgeInsets.all(
+                                2.0.w), // ضبط التباعد بناءً على حجم الشاشة
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                CircleAvatar(
+                                  radius: 18
+                                      .r, // ضبط نصف قطر الأيقونة بناءً على حجم الشاشة
+                                  backgroundImage: NetworkImage(
+                                    people['imageUrl'],
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                people[
-                                    'name'], // يمكنك تغيير هذا النص بعنوان البطاقة
-                                style: TextStyle(
-                                    fontSize: 16.sp,
+                                SizedBox(
+                                    height:
+                                        2.h), // إضافة تباعد بين الأيقونة والنص
+                                Text(
+                                  people['name'],
+                                  style: TextStyle(
+                                    fontFamily: "Boutros",
+                                    fontSize: 13
+                                        .sp, // ضبط حجم الخط بناءً على حجم الشاشة
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blueAccent),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
+                                    color: Colors.blueAccent,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
                         ),
                       );
                     },

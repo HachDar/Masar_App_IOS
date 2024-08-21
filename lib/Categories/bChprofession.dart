@@ -17,10 +17,10 @@ class Profession extends StatefulWidget {
 
 class _ProfessionState extends State<Profession> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<String> _adNames = [];
+  final List<String> _adNames = [];
   List<DocumentSnapshot> _professionDocs = [];
-  int _currentIndex = 0;
-  bool _isLoadingAds = true;
+  final int _currentIndex = 0;
+  final bool _isLoadingAds = true;
   bool _isLoadingProfessions = true;
 
   @override
@@ -36,6 +36,7 @@ class _ProfessionState extends State<Profession> {
           .collection('categories')
           .doc(widget.catid)
           .collection("profession")
+          .orderBy('timestamp', descending: false) // ترتيب تصاعدي
           .get();
       setState(() {
         _professionDocs = querySnapshot.docs;
@@ -50,7 +51,7 @@ class _ProfessionState extends State<Profession> {
   }
 
   void _launchAdurl(String adurl) async {
-    String url = "$adurl";
+    String url = adurl;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -162,6 +163,7 @@ class _ProfessionState extends State<Profession> {
                   child: Text(
                     "مسار",
                     style: TextStyle(
+                        fontFamily: "Boutros",
                         color: Colors.blue,
                         fontSize: 32.sp,
                         fontWeight: FontWeight.bold),
@@ -209,7 +211,8 @@ class _ProfessionState extends State<Profession> {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 15.0,
                       mainAxisSpacing: 10.0,
@@ -217,40 +220,49 @@ class _ProfessionState extends State<Profession> {
                     itemCount: _professionDocs.length,
                     itemBuilder: (context, i) {
                       final professionDoc = _professionDocs[i];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Get.to(() => Type(
-                                  catid: widget.catid,
-                                  profid: professionDoc.id,
-                                ));
-                          },
-                          child:  Card(
+                      return InkWell(
+                        onTap: () {
+                          Get.to(() => Type(
+                                catid: widget.catid,
+                                profid: professionDoc.id,
+                              ));
+                        },
+                        child: Card(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(8.0
+                                .r), // استخدام .r لضبط نصف قطر الحدود بناءً على حجم الشاشة
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 30.r,
-                                backgroundImage: NetworkImage(
-                                  professionDoc['imageUrl'],
+                          child: Padding(
+                            // إضافة Padding للتباعد الداخلي
+                            padding: EdgeInsets.all(2.0
+                                .w), // استخدام .w لضبط التباعد بناءً على حجم الشاشة
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                CircleAvatar(
+                                  radius: 18
+                                      .r, // استخدام .r لضبط نصف القطر بناءً على حجم الشاشة
+                                  backgroundImage: NetworkImage(
+                                    professionDoc['imageUrl'],
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                professionDoc[
-                                    'name'], // يمكنك تغيير هذا النص بعنوان البطاقة
-                                style: TextStyle(
-                                    fontSize: 16.sp,
+                                SizedBox(
+                                    height:
+                                        2.h), // إضافة تباعد بين الأيقونة والنص
+                                Text(
+                                  professionDoc['name'],
+                                  style: TextStyle(
+                                    fontFamily: "Boutros",
+                                    fontSize: 13
+                                        .sp, // استخدام .sp لضبط حجم الخط بناءً على حجم الشاشة
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blueAccent),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
+                                    color: Colors.blueAccent,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
                         ),
                       );
                     },

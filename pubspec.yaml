@@ -22,7 +22,6 @@ dependencies:
   url_launcher: ^6.3.0
   flutter_svg: ^2.0.10+1
   firebase_messaging: ^15.0.3
-  flutter_facebook_auth: ^7.0.1
   rive_common: ^0.4.10
 
 dev_dependencies:
@@ -36,3 +35,9 @@ flutter:
   assets:
     - images/
     - assets/
+
+  fonts:
+    - family: Boutros
+      fonts:
+        - asset: font/BoutrosMBCDinkum-Medium.ttf
+        

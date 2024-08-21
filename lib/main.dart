@@ -9,21 +9,21 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "AIzaSyDzK0zVJZ2bZ8YYgHJer3Ohn5dyYcfchYU",
-      appId: "1:272902468976:android:5c2709210a8f22afa00bb5",
-      messagingSenderId: "272902468976",
-      projectId: "dalel-cbd9c",
+      apiKey: "AIzaSyBOAR0pV4GijV5_pwEhGQ-4vN50LHS12Bk",
+      appId: "1:1093045761112:android:090298bb06e17c5fb9c62d",
+      messagingSenderId: "1093045761112",
+      projectId: "masar-71d17",
+      storageBucket: "masar-71d17.appspot.com",
     ),
   );
-  runApp(MyApp());
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -37,13 +37,13 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _requestPermissions();
-    _subscribeToTopic();
+    // _subscribeToTopic();
   }
 
-  Future<void> _subscribeToTopic() async {
-    await FirebaseMessaging.instance.subscribeToTopic('all');
-    print('Subscribed to topic: all');
-  }
+  // Future<void> _subscribeToTopic() async {
+  //   await FirebaseMessaging.instance.subscribeToTopic('all');
+  //   print('Subscribed to topic: all');
+  // }
 
   Future<void> _requestPermissions() async {
     NotificationSettings settings = await _messaging.requestPermission(
@@ -76,19 +76,19 @@ class _MyAppState extends State<MyApp> {
       }
     });
     return ScreenUtilInit(
-      designSize: Size(360, 690),
+      designSize: const Size(360, 690),
       builder: (context, child) {
         return GetMaterialApp(
           getPages: [
-            GetPage(name: "/", page: () => AuthPage()),
-            GetPage(name: "/CityPage", page: () => CityPage()),
+            GetPage(name: "/", page: () => const AuthPage()),
+            GetPage(name: "/CityPage", page: () => const CityPage()),
           ],
           debugShowCheckedModeBanner: false,
           title: 'masar',
           theme: ThemeData(
             primaryColor: Colors.blue,
           ),
-          home: AuthenticationWrapper(),
+          home: const AuthenticationWrapper(),
         );
       },
     );
@@ -96,19 +96,21 @@ class _MyAppState extends State<MyApp> {
 }
 
 class AuthenticationWrapper extends StatelessWidget {
+  const AuthenticationWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User?>(
       future: FirebaseAuth.instance.authStateChanges().first,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasData) {
           return const CityPage();
         } else {
-          return AuthPage();
+          return const AuthPage();
         }
       },
     );

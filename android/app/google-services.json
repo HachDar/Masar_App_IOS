@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "272902468976",
-    "project_id": "dalel-cbd9c",
-    "storage_bucket": "dalel-cbd9c.appspot.com"
+    "project_number": "1093045761112",
+    "project_id": "masar-71d17",
+    "storage_bucket": "masar-71d17.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:272902468976:android:5c2709210a8f22afa00bb5",
+        "mobilesdk_app_id": "1:1093045761112:android:090298bb06e17c5fb9c62d",
         "android_client_info": {
           "package_name": "com.example.dalel"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDzK0zVJZ2bZ8YYgHJer3Ohn5dyYcfchYU"
+          "current_key": "AIzaSyBOAR0pV4GijV5_pwEhGQ-4vN50LHS12Bk"
         }
       ],
       "services": {

@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>272902468976-7lfa7d9sc3cqrun0e2315io3on86kvpc.apps.googleusercontent.com</string>
+	<string>1093045761112-dfphsl63kefjph35r9aobbj70laa6rh4.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.272902468976-7lfa7d9sc3cqrun0e2315io3on86kvpc</string>
+	<string>com.googleusercontent.apps.1093045761112-dfphsl63kefjph35r9aobbj70laa6rh4</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>272902468976-0ut1rss085ha47adj54e11393m9jh5js.apps.googleusercontent.com</string>
+	<string>1093045761112-scor0et272c3m7cfmut5h3gvv24uvu7q.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBghDa0ay2x_yFNnolrXdf1A-tQ_1tafo0</string>
+	<string>AIzaSyA9-B8PIOsiXoTf5DcgbyeKW1GeFSCx1bg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>272902468976</string>
+	<string>1093045761112</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.dalel</string>
 	<key>PROJECT_ID</key>
-	<string>dalel-cbd9c</string>
+	<string>masar-71d17</string>
 	<key>STORAGE_BUCKET</key>
-	<string>dalel-cbd9c.appspot.com</string>
+	<string>masar-71d17.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:272902468976:ios:565f07988d9b7262a00bb5</string>
+	<string>1:1093045761112:ios:92157ceba794f26bb9c62d</string>
 </dict>
 </plist>

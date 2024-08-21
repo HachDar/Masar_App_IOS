@@ -12,7 +12,7 @@ class CustomTextField extends StatefulWidget {
  
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.color,
     required this.labelText,
@@ -21,7 +21,7 @@ class CustomTextField extends StatefulWidget {
     required this.validator,
     required this.maxLength,
     
-  }) : super(key: key);
+  });
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -46,7 +46,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           controller: widget.controller,
           decoration: InputDecoration(
             hintText: widget.hintText,
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: const TextStyle(color: Colors.grey),
             labelText: widget.labelText,
             labelStyle: TextStyle(color: widget.color),
             border: OutlineInputBorder(

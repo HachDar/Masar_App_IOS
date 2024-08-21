@@ -1,15 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dalel/Categories/aChcity.dart';
-import 'package:dalel/auth/authpage.dart';
 import 'package:dalel/auth/login.dart';
-import 'package:dalel/extensions/button.dart';
-import 'package:dalel/extensions/textformfild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -19,37 +15,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  Future<UserCredential> signInWithFacebook() async {
-    try {
-      // Trigger the sign-in flow
-      final LoginResult loginResult = await FacebookAuth.instance.login();
-
-      // Check for error in login result
-      if (loginResult.status == LoginStatus.success) {
-        // Create a credential from the access token
-        final OAuthCredential facebookAuthCredential =
-            FacebookAuthProvider.credential(
-                loginResult.accessToken!.tokenString);
-        Get.offAll(const CityPage());
-        // Once signed in, return the UserCredential
-        return await FirebaseAuth.instance
-            .signInWithCredential(facebookAuthCredential);
-      } else {
-        print('Facebook login failed: ${loginResult.status}');
-        throw FirebaseAuthException(
-          code: 'ERROR_FACEBOOK_LOGIN_FAILED',
-          message: loginResult.message,
-        );
-      }
-    } catch (e) {
-      print('Error during Facebook login: $e');
-      throw FirebaseAuthException(
-        code: 'ERROR_FACEBOOK_LOGIN_FAILED',
-        message: e.toString(),
-      );
-    }
-  }
-
   Future<UserCredential> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -63,23 +28,11 @@ class _RegisterState extends State<Register> {
           desc: 'فشل تسجيل الدخول عبر Google. الرجاء المحاولة مرة أخرى.',
           btnOkOnPress: () {},
         ).show();
-        return Future.error("Google sign-in failed");
+        return Future.error("Google sign in failed");
       }
 
-      final GoogleSignInAuthentication? googleAuth =
+      final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      if (googleAuth == null) {
-        print("Google authentication failed");
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.error,
-          animType: AnimType.bottomSlide,
-          title: 'خطأ',
-          desc: 'فشل التحقق من Google. الرجاء المحاولة مرة أخرى.',
-          btnOkOnPress: () {},
-        ).show();
-        return Future.error("Google authentication failed");
-      }
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -213,6 +166,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -228,18 +182,15 @@ class _RegisterState extends State<Register> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'مسار',
-                  style: TextStyle(
-                    fontSize: 48.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
+                CircleAvatar(
+                  child: Image.asset(
+                      "images/Black and Orange Initials Letter R Broadcast Media Logo.png"),
                 ),
                 SizedBox(height: 20.h),
                 Text(
                   'انشاء الحساب',
                   style: TextStyle(
+                    fontFamily: "Boutros",
                     fontSize: 24.sp,
                   ),
                 ),
@@ -271,7 +222,6 @@ class _RegisterState extends State<Register> {
                   width: 300.w,
                   child: ElevatedButton(
                     onPressed: _register,
-                    child: const Text('انشاء الحساب'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.blue,
@@ -281,36 +231,32 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.zero,
                       ),
                     ),
+                    child: const Text(
+                      'انشاء الحساب',
+                      style: TextStyle(
+                        fontFamily: "Boutros",
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 20.h),
-                const Text('تسجيل باستخدام'),
+                const Text(
+                  'تسجيل باستخدام',
+                  style: TextStyle(
+                    fontFamily: "Boutros",
+                  ),
+                ),
                 SizedBox(height: 10.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        await signInWithFacebook();
-                      },
-                      child: SizedBox(
-                        width: 50.w,
-                        height: 50.h,
-                        child: Image.asset("images\Facebook_Logo_2023.png"),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await signInWithGoogle();
-                        Get.offAll(const CityPage());
-                      },
-                      child: SizedBox(
-                        width: 50.w,
-                        height: 50.h,
-                        child: Image.asset("images/google-symbol.png"),
-                      ),
-                    ),
-                  ],
+                InkWell(
+                  onTap: () async {
+                    await signInWithGoogle();
+                    Get.offAll(const CityPage());
+                  },
+                  child: SizedBox(
+                    width: 50.w,
+                    height: 50.h,
+                    child: Image.asset("images/google-symbol.png"),
+                  ),
                 ),
               ],
             ),
