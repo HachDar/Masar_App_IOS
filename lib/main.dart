@@ -9,16 +9,16 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyBOAR0pV4GijV5_pwEhGQ-4vN50LHS12Bk",
-      appId: "1:1093045761112:android:090298bb06e17c5fb9c62d",
-      messagingSenderId: "1093045761112",
-      projectId: "masar-71d17",
-      storageBucket: "masar-71d17.appspot.com",
-    ),
-  );
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await Firebase.initializeApp(
+  //   options: const FirebaseOptions(
+  //     apiKey: "AIzaSyBOAR0pV4GijV5_pwEhGQ-4vN50LHS12Bk",
+  //     appId: "1:1093045761112:android:090298bb06e17c5fb9c62d",
+  //     messagingSenderId: "1093045761112",
+  //     projectId: "masar-71d17",
+  //     storageBucket: "masar-71d17.appspot.com",
+  //   ),
+  // );
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -118,6 +118,5 @@ class AuthenticationWrapper extends StatelessWidget {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
   print('Handling a background message: ${message.messageId}');
 }
